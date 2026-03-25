@@ -1,0 +1,12 @@
+[Unit]
+Description=Keyboard backlight daemon
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/home/levi/Documents/projects/bright-tap/.venv/bin/python /home/levi/Documents/projects/bright-tap/kbd-daemon.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
