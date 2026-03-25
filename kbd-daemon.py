@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import asyncio
-import evdev
 from pathlib import Path
+
+import evdev
 
 TIMEOUT = 5
 
@@ -16,8 +17,8 @@ def find_backlight():
     # Procurar por padrões comuns de backlight de teclado
     patterns = [
         "*::kbd_backlight",  # ThinkPad, Dell, etc
-        "*backlight*",       # Generic
-        "kbd_backlight",     # Fallback
+        "*backlight*",  # Generic
+        "kbd_backlight",  # Fallback
     ]
 
     for pattern in patterns:
@@ -44,16 +45,18 @@ def find_keyboards():
     keyboards = [d for d in devices if evdev.ecodes.EV_KEY in d.capabilities()]
     # Excluir touchpads, mice e outros dispositivos que não são teclados
     exclude_keywords = ("touchpad", "mouse", "trackpad", "trackpoint")
-    return [d for d in keyboards if not any(kw in d.name.lower() for kw in exclude_keywords)]
+    return [
+        d for d in keyboards if not any(kw in d.name.lower() for kw in exclude_keywords)
+    ]
 
 
-async def monitor(device, timer_reset):
+async def monitor(device: evdev.InputDevice[str], timer_reset: asyncio.Event):
     async for event in device.async_read_loop():
         if event.type == evdev.ecodes.EV_KEY and event.value == 1:
             timer_reset.set()
 
 
-async def timeout_handler(timer_reset):
+async def timeout_handler(timer_reset: asyncio.Event):
     while True:
         await timer_reset.wait()
         timer_reset.clear()

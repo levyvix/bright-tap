@@ -117,7 +117,7 @@ pip3 install --user evdev
 
 **Se sua distro não tiver o pacote:**
 ```bash
-# Fallback para pip (menos recomendado)
+# Fallback para pip
 pip3 install --user evdev
 # ou
 sudo pip3 install evdev
@@ -125,7 +125,7 @@ sudo pip3 install evdev
 
 ### Instalação rápida (uma linha)
 
-**Instalação remota (recomendado para testes):**
+**Instalação remota:**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/levyvix/bright-tap/main/install.sh | bash
 ```
@@ -217,7 +217,7 @@ bright-tap/
 
 - **python-evdev**: Para monitorar eventos de teclado
   - Instalado via pacman: `sudo pacman -S python-evdev`
-  - Não via pip (melhor usar o pacote do sistema)
+  - Não via pip (melhor usar o pacote do sistem)
 
 ## Arquitetura
 

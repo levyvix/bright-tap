@@ -4,4 +4,6 @@ version = "0.1.0"
 description = "Daemon de controle automático de backlight de teclado para ThinkPad"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "evdev>=1.9.3",
+]
