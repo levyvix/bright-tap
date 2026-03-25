@@ -1,12 +1,40 @@
 #!/usr/bin/env python3
 import asyncio
 import evdev
+from pathlib import Path
 
-BACKLIGHT = "/sys/class/leds/tpacpi::kbd_backlight/brightness"
 TIMEOUT = 5
 
 
+def find_backlight():
+    """Auto-detectar arquivo de backlight de teclado em /sys/class/leds/"""
+    leds_path = Path("/sys/class/leds")
+
+    if not leds_path.exists():
+        return None
+
+    # Procurar por padrões comuns de backlight de teclado
+    patterns = [
+        "*::kbd_backlight",  # ThinkPad, Dell, etc
+        "*backlight*",       # Generic
+        "kbd_backlight",     # Fallback
+    ]
+
+    for pattern in patterns:
+        for led_dir in sorted(leds_path.glob(pattern)):
+            brightness_file = led_dir / "brightness"
+            if brightness_file.exists():
+                return str(brightness_file)
+
+    return None
+
+
+BACKLIGHT = find_backlight()
+
+
 def set_light(value: int):
+    if not BACKLIGHT:
+        return
     with open(BACKLIGHT, "w") as f:
         f.write(str(value))
 
@@ -40,15 +68,22 @@ async def timeout_handler(timer_reset):
 
 
 async def main():
+    if not BACKLIGHT:
+        print("error: no keyboard backlight found")
+        print("supported devices: ThinkPad, Dell, HP, ASUS, and generic Linux laptops")
+        return
+
+    print(f"backlight: {BACKLIGHT}")
+
     keyboards = find_keyboards()
     if not keyboards:
-        print("no keyboards found")
+        print("error: no keyboards found")
         return
 
     print(f"monitoring {len(keyboards)} device(s):")
     for d in keyboards:
         print(f"  - {d.path}: {d.name}")
-    
+
     timer_reset = asyncio.Event()
     set_light(0)
 

@@ -1,6 +1,6 @@
 # 🔦 Bright-Tap
 
-Um daemon de controle automático de backlight de teclado para ThinkPad.
+Um daemon de controle automático de backlight de teclado para Linux (ThinkPad, Dell, HP, ASUS, etc).
 
 ## O que é?
 
@@ -11,6 +11,7 @@ Um daemon de controle automático de backlight de teclado para ThinkPad.
 - ⚡ **Funciona em background** como um daemon systemd
 - 🎯 **Detecta múltiplos teclados** (suporta teclados externos também)
 - 🚫 **Filtra dispositivos** (ignora touchpads, mouses, trackpoints)
+- 💻 **Compatível com vários laptops** (auto-detecta backlight: ThinkPad, Dell, HP, ASUS, etc.)
 
 ## ⚡ Quick Start
 
@@ -41,14 +42,26 @@ Pronto! O daemon já está rodando. 🎉
 4. **Desligamento**: Se nenhuma tecla for pressionada nos 5s, **apaga o backlight**
 5. **Reset**: Cada tecla pressionada durante os 5s reinicia o timer
 
-## Instalação
-
 ### Requisitos
 
 - Python 3.12+
-- `python-evdev` (via pacman)
+- `python-evdev`
 - Acesso a `/sys/class/leds/` (requer permissões root)
-- Linux com ThinkPad
+- Linux com backlight de teclado (ThinkPad, Dell, HP, ASUS, etc.)
+
+## 💻 Compatibilidade de Laptops
+
+O daemon **auto-detecta o backlight** do seu laptop. Funciona com:
+
+| Marca | Modelos | Status |
+|-------|---------|--------|
+| **Lenovo ThinkPad** | X1, T-series, P-series, E-series | ✅ Testado |
+| **Dell XPS, Inspiron** | Vários modelos | ✅ Suportado |
+| **HP Pavilion, Envy** | Vários modelos | ✅ Suportado |
+| **ASUS VivoBook, ROG** | Vários modelos | ✅ Suportado |
+| **Outros** | Com `/sys/class/leds/` | ⚠️ Pode funcionar |
+
+Se seu laptop não tiver backlight de teclado ou o daemon não encontrar o arquivo, o script informará no iniciar.
 
 ### Pré-requisitos
 
