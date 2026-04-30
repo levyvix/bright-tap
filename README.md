@@ -1,6 +1,6 @@
 # 🔦 Bright-Tap
 
-Um daemon de controle automático de backlight de teclado para Linux (ThinkPad, Dell, HP, ASUS, etc).
+Acende o backlight do teclado quando você digita e apaga após inatividade.
 
 ## O que é?
 
